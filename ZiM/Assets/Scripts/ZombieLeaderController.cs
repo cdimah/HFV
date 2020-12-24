@@ -250,6 +250,7 @@ public class ZombieLeaderController : MonoBehaviour
         if (col.gameObject.tag == "Bystander")
         {
             enemy = col.gameObject;
+            destinationSet = true;
             attacking = true;
         }
     }

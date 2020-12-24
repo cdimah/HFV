@@ -261,14 +261,18 @@ public class ZombieController : MonoBehaviour
 
     private IEnumerator Attacking()
     {
-        if (attacking == true)
+        if (enemy != null)
         {
-            var enemyChar = enemy.GetComponent<BystanderController>();
-            enemyChar.DamageDone(strength);
+            if (attacking == true)
+            {
+                var enemyChar = enemy.GetComponent<BystanderController>();
+                enemyChar.DamageDone(strength);
+            }
+            damageWait = Random.Range(1.5f, 2.5f);
+            yield return new WaitForSeconds(damageWait);
+            StartCoroutine("Attacking");
         }
-        damageWait = Random.Range(1.5f, 2.5f);
-        yield return new WaitForSeconds(damageWait);
-        StartCoroutine("Attacking");
+        
     }
 
     private IEnumerator AreaCheck()                                 //Coroutine to Keep zombies checking if they are inside the Leader area
@@ -341,17 +345,19 @@ public class ZombieController : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
-
-        if (col.gameObject.tag == "Bystander")
+        GameObject collided = col.gameObject;
+        if (collided.tag == "Bystander")
         {
             enemy = col.gameObject;
+            destinationSet = false;
             attacking = true;
         }
     }
 
     void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Bystander")
+        GameObject collided = col.gameObject;
+        if (collided.tag == "Bystander")
         {
             enemy = col.gameObject;
             attacking = false;

@@ -5,27 +5,27 @@ using UnityEngine;
 public class BystanderController : MonoBehaviour
 {
 
-    bool refPosonUBorder = false;        //Used to detect if in Upper boarder.
-    bool refPosonRBorder = false;        //Used to detect if in Right boarder.
-    bool refPosonDBorder = false;        //Used to detect if in Lower boarder.
-    bool refPosonLBorder = false;        //Used to detect if in Upper boarder.
-    bool refPosattacking = false;        //Used to know if the zombie is attacking.
-    bool refPosdestinationSet;           //Destination point is set.
-    float refPosspeed;                   //Speed at which the Bystander will run.
-    float refPosdamageWait;              //Seconds the player will wait  to make damage.
-    float refPosstrength;                //Variable used to define how much damage will deal.
-    float refPossetPositionX;            //Variable to calculate X direction of Euphoric.
-    float refPossetPositionY;            //Variable to calculate Y direction of Euphoric.
-    float refPoscheckWait;               //Seconds the bystander will wait before cecking if in area.
-    float refPosdistToZombie;            //Used to calculate distance to closest Zombie.
-    float refPoszRef;                    //Used to assign y value to z.
-    float refPosmaxDist = 3;             //Distance at which will run from zombie.
+    bool onUBorder = false;        //Used to detect if in Upper boarder.
+    bool onRBorder = false;        //Used to detect if in Right boarder.
+    bool onDBorder = false;        //Used to detect if in Lower boarder.
+    bool onLBorder = false;        //Used to detect if in Upper boarder.
+    bool attacking = false;        //Used to know if the zombie is attacking.
+    bool destinationSet;           //Destination point is set.
+    float speed;                   //Speed at which the Bystander will run.
+    float damageWait;              //Seconds the player will wait  to make damage.
+    float strength;                //Variable used to define how much damage will deal.
+    float setPositionX;            //Variable to calculate X direction of Euphoric.
+    float setPositionY;            //Variable to calculate Y direction of Euphoric.
+    float checkWait;               //Seconds the bystander will wait before cecking if in area.
+    float distToZombie;            //Used to calculate distance to closest Zombie.
+    float zRef;                    //Used to assign y value to z.
+    float maxDist = 3;             //Distance at which will run from zombie.
     Vector2 refPos;
-    Vector3 refPostargetPosition;
-    Vector3 refPoseuphoricDirection;     //Vector to determinate direction at which the Euphoric will run.
-    GameObject refPosclosestZombie;
+    Vector3 targetPosition;
+    Vector3 euphoricDirection;     //Vector to determinate direction at which the Euphoric will run.
+    GameObject closestZombie;
     Collider2D coll;           //Colider for interactions.
-    SpriteRenderer refPosmySR;
+    SpriteRenderer mySR;
     GameObject enemyChar;              //Bystander that is being attacked.
 
 
@@ -45,7 +45,7 @@ public class BystanderController : MonoBehaviour
 
     void Start()
     {
-        refPosmySR = GetComponent<SpriteRenderer>();
+        mySR = GetComponent<SpriteRenderer>();
         int i = Random.Range(0, 5);
         if(i == 0)
         {
@@ -66,57 +66,57 @@ public class BystanderController : MonoBehaviour
         Healthpoints = MaxHealthpoints;
         Healthbar.SetHealth(Healthpoints, MaxHealthpoints);
         coll = GetComponent<Collider2D>();     //Create collider for all interactions.
-        refPostargetPosition = transform.position;
-        refPoszRef = refPostargetPosition.y;
-        refPostargetPosition.z = refPoszRef;
-        transform.position = refPostargetPosition;
+        targetPosition = transform.position;
+        zRef = targetPosition.y;
+        targetPosition.z = zRef;
+        transform.position = targetPosition;
         switch (thisBystander)
         {
             case BystanderType.Shocked:
                 break;
             case BystanderType.Frightened:
-                refPosspeed = 2;
-                refPosmySR.color = Color.blue;
+                speed = 2;
+                mySR.color = Color.blue;
                 break;
             case BystanderType.Smart:
-                refPosspeed = 4;
-                refPosstrength = 1;
-                refPosmySR.color = Color.green;
+                speed = 4;
+                strength = 1;
+                mySR.color = Color.green;
                 break;
             case BystanderType.Euphoric:
-                refPosspeed = 5;
-                refPosstrength = 1;
-                refPosmySR.color = Color.red;
-                int refPosselect = Random.Range(1, 5);
-                if (refPosselect == 1)
+                speed = 5;
+                strength = 1;
+                mySR.color = Color.red;
+                int select = Random.Range(1, 5);
+                if (select == 1)
                 {
-                    refPossetPositionX = 1f;
-                    refPossetPositionY = 1f;
+                    setPositionX = 1f;
+                    setPositionY = 1f;
                 }
-                else if (refPosselect == 2)
+                else if (select == 2)
                 {
-                    refPossetPositionX = 1f;
-                    refPossetPositionY = -1f;
+                    setPositionX = 1f;
+                    setPositionY = -1f;
                 }
-                else if (refPosselect == 3)
+                else if (select == 3)
                 {
-                    refPossetPositionX = -1f;
-                    refPossetPositionY = 1f;
+                    setPositionX = -1f;
+                    setPositionY = 1f;
                 }
                 else
                 {
-                    refPossetPositionX = -1f;
-                    refPossetPositionY = -1f;
+                    setPositionX = -1f;
+                    setPositionY = -1f;
                 }
-                refPoseuphoricDirection = new Vector3(refPossetPositionX, refPossetPositionY, 0f);
+                euphoricDirection = new Vector3(setPositionX, setPositionY, 0f);
                 break;
             case BystanderType.Brave:
-                refPosspeed = 3;
-                refPosstrength = 2;
-                refPosmySR.color = Color.yellow;
+                speed = 3;
+                strength = 2;
+                mySR.color = Color.yellow;
                 break;
         }
-        refPosclosestZombie = FindClosestZombie();
+        closestZombie = FindClosestZombie();
         StartCoroutine("ZombieCheck");
     }
 
@@ -129,27 +129,27 @@ public class BystanderController : MonoBehaviour
                 //Only include shocked animation
                 break;
             case BystanderType.Frightened:
-                if (refPosdestinationSet == true)
+                if (destinationSet == true)
                 {
                     Turn();
                     Moving();
                 }
                 break;
             case BystanderType.Smart:
-                if (refPosdestinationSet == true)
+                if (destinationSet == true)
                 {
                     Turn();
                     Moving();
                 }
                 break;
             case BystanderType.Euphoric:
-                if (refPosdestinationSet == true)
+                if (destinationSet == true)
                 {
                     EuphoricMoving();
                 }
                 break;
             case BystanderType.Brave:
-                if (refPosdestinationSet == true)
+                if (destinationSet == true)
                 {
                     Turn();
                     Moving();
@@ -169,53 +169,53 @@ public class BystanderController : MonoBehaviour
             case BystanderType.Shocked:
                 break;
             case BystanderType.Frightened:
-                if (refPos.x > refPosclosestZombie.transform.position.x)
+                if (refPos.x > closestZombie.transform.position.x)
                 {
-                    refPostargetPosition.x = refPos.x + (Random.Range(1.5f, 2.5f));
+                    targetPosition.x = refPos.x + (Random.Range(1.5f, 2.5f));
                 }
-                else if (refPos.x < refPosclosestZombie.transform.position.x)
+                else if (refPos.x < closestZombie.transform.position.x)
                 {
-                    refPostargetPosition.x = refPos.x + (Random.Range(1.5f, 2.5f) * -1);
+                    targetPosition.x = refPos.x + (Random.Range(1.5f, 2.5f) * -1);
                 }
 
-                if (refPos.y > refPosclosestZombie.transform.position.y)
+                if (refPos.y > closestZombie.transform.position.y)
                 {
-                    refPostargetPosition.y = refPos.y + (Random.Range(1.5f, 2.5f));
+                    targetPosition.y = refPos.y + (Random.Range(1.5f, 2.5f));
                 }
-                else if (refPos.y < refPosclosestZombie.transform.position.y)
+                else if (refPos.y < closestZombie.transform.position.y)
                 {
-                    refPostargetPosition.y = refPos.y + (Random.Range(1.5f, 2.5f) * -1);
+                    targetPosition.y = refPos.y + (Random.Range(1.5f, 2.5f) * -1);
                 }
-                refPosdestinationSet = true;
+                destinationSet = true;
 
                 break;
             case BystanderType.Smart:
-                if (refPos.x > refPosclosestZombie.transform.position.x)
+                if (refPos.x > closestZombie.transform.position.x)
                 {
-                    refPostargetPosition.x = refPos.x + (Random.Range(1f, 2.5f));
+                    targetPosition.x = refPos.x + (Random.Range(1f, 2.5f));
                 }
-                else if (refPos.x < refPosclosestZombie.transform.position.x)
+                else if (refPos.x < closestZombie.transform.position.x)
                 {
-                    refPostargetPosition.x = refPos.x + (Random.Range(1f, 2.5f) * -1);
+                    targetPosition.x = refPos.x + (Random.Range(1f, 2.5f) * -1);
                 }
 
-                if (refPos.y > refPosclosestZombie.transform.position.y)
+                if (refPos.y > closestZombie.transform.position.y)
                 {
-                    refPostargetPosition.y = refPos.y + (Random.Range(1f, 2.5f));
+                    targetPosition.y = refPos.y + (Random.Range(1f, 2.5f));
                 }
-                else if (refPos.y < refPosclosestZombie.transform.position.y)
+                else if (refPos.y < closestZombie.transform.position.y)
                 {
-                    refPostargetPosition.y = refPos.y + (Random.Range(1f, 2.5f) * -1);
+                    targetPosition.y = refPos.y + (Random.Range(1f, 2.5f) * -1);
                 }
-                refPosdestinationSet = true;
+                destinationSet = true;
 
                 break;
             case BystanderType.Euphoric:
-                refPosdestinationSet = true;
+                destinationSet = true;
                 break;
             case BystanderType.Brave:
-                refPostargetPosition = refPosclosestZombie.transform.position;
-                refPosdestinationSet = true;
+                targetPosition = closestZombie.transform.position;
+                destinationSet = true;
 
                 break;
         }
@@ -225,19 +225,19 @@ public class BystanderController : MonoBehaviour
     void Moving()
     {
         CheckBorders();
-        refPoszRef = refPostargetPosition.y;
-        refPostargetPosition.z = refPoszRef;
-        transform.position = Vector3.MoveTowards(transform.position, refPostargetPosition, refPosspeed * Time.deltaTime);
-        if (transform.position == refPostargetPosition)
+        zRef = targetPosition.y;
+        targetPosition.z = zRef;
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        if (transform.position == targetPosition)
         {
-            refPosdestinationSet = false;
+            destinationSet = false;
         }
     }
 
     void EuphoricMoving()
     {
-        refPoseuphoricDirection.z = refPoseuphoricDirection.y;
-        if(refPoseuphoricDirection.x == 1)
+        euphoricDirection.z = euphoricDirection.y;
+        if(euphoricDirection.x == 1)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
@@ -245,15 +245,15 @@ public class BystanderController : MonoBehaviour
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
-        transform.Translate(refPoseuphoricDirection * refPosspeed * Time.deltaTime);
+        transform.Translate(euphoricDirection * speed * Time.deltaTime);
     }
 
     void Turn()
     {
-        if (transform.position.x != refPostargetPosition.x)               //To avoid turning at begining or moving only on 'y' axis
+        if (transform.position.x != targetPosition.x)               //To avoid turning at begining or moving only on 'y' axis
         {
 
-            if (transform.position.x < refPostargetPosition.x)
+            if (transform.position.x < targetPosition.x)
             {
                 transform.localScale = new Vector3(1, 1, 1);
             }
@@ -266,62 +266,62 @@ public class BystanderController : MonoBehaviour
 
     void CheckBorders()
     {
-        if (refPosonUBorder == true && refPostargetPosition.y > transform.position.y)
+        if (onUBorder == true && targetPosition.y > transform.position.y)
         {
-            refPostargetPosition.y = transform.position.y;
+            targetPosition.y = transform.position.y;
         }
-        else if (refPosonUBorder == true && refPostargetPosition.y < transform.position.y)
+        else if (onUBorder == true && targetPosition.y < transform.position.y)
         {
-            refPosonUBorder = false;
-        }
-
-        if (refPosonRBorder == true && refPostargetPosition.x > transform.position.x)
-        {
-            refPostargetPosition.x = transform.position.x;
-        }
-        else if (refPosonRBorder == true && refPostargetPosition.x < transform.position.x)
-        {
-            refPosonRBorder = false;
+            onUBorder = false;
         }
 
-        if (refPosonDBorder == true && refPostargetPosition.y < transform.position.y)
+        if (onRBorder == true && targetPosition.x > transform.position.x)
         {
-            refPostargetPosition.y = transform.position.y;
+            targetPosition.x = transform.position.x;
         }
-        else if (refPosonDBorder == true && refPostargetPosition.y > transform.position.y)
+        else if (onRBorder == true && targetPosition.x < transform.position.x)
         {
-            refPosonDBorder = false;
+            onRBorder = false;
         }
 
-        if (refPosonLBorder == true && refPostargetPosition.x < transform.position.x)
+        if (onDBorder == true && targetPosition.y < transform.position.y)
         {
-            refPostargetPosition.x = transform.position.x;
+            targetPosition.y = transform.position.y;
         }
-        else if (refPosonLBorder == true && refPostargetPosition.x > transform.position.x)
+        else if (onDBorder == true && targetPosition.y > transform.position.y)
         {
-            refPosonLBorder = false;
+            onDBorder = false;
+        }
+
+        if (onLBorder == true && targetPosition.x < transform.position.x)
+        {
+            targetPosition.x = transform.position.x;
+        }
+        else if (onLBorder == true && targetPosition.x > transform.position.x)
+        {
+            onLBorder = false;
         }
 
     }
 
     GameObject FindClosestZombie()
     {
-        GameObject[] refPosgos;
-        refPosgos = GameObject.FindGameObjectsWithTag("Zombie");
-        GameObject refPosclosest = null;
-        float refPosdistance = Mathf.Infinity;
-        Vector3 refPosposition = transform.position;
-        foreach (GameObject refPosgo in refPosgos)
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("Zombie");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach (GameObject go in gos)
         {
-            Vector3 refPosdiff = refPosgo.transform.position - refPosposition;
-            float refPoscurDistance = refPosdiff.sqrMagnitude;
-            if (refPoscurDistance < refPosdistance)
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
             {
-                refPosclosest = refPosgo;
-                refPosdistance = refPoscurDistance;
+                closest = go;
+                distance = curDistance;
             }
         }
-        return refPosclosest;
+        return closest;
     }
 
     public void DamageDone(float damage)
@@ -330,45 +330,45 @@ public class BystanderController : MonoBehaviour
         Healthbar.SetHealth(Healthpoints, MaxHealthpoints);
         if (Healthpoints <= 0)
         {
-            GameObject refPoscontroller = GameObject.Find("SceneController");
-            var controller = refPoscontroller.GetComponent<SceneController>();
-            controller.CreateZombie(transform.position);
+            GameObject controller = GameObject.Find("SceneController");
+            var cont = controller.GetComponent<SceneController>();
+            cont.CreateZombie(transform.position);
             Destroy(gameObject);
         }
     }
     private IEnumerator Attacking()
     {
-        if (refPosattacking == true)
+        if (attacking == true)
         {
             if (enemyChar.name == "ZombieLeader")
             {
                 var enemy = enemyChar.GetComponent<ZombieLeaderController>();
-                enemy.DamageDone(refPosstrength);
+                enemy.DamageDone(strength);
             }
 
             if (enemyChar.name == "Zombie")
             {
                 var enemy = enemyChar.GetComponent<ZombieController>();
-                enemy.DamageDone(refPosstrength);
+                enemy.DamageDone(strength);
             }
         }
-        refPosdamageWait = Random.Range(1.5f, 2.5f);
-        yield return new WaitForSeconds(refPosdamageWait);
+        damageWait = Random.Range(1.5f, 2.5f);
+        yield return new WaitForSeconds(damageWait);
         StartCoroutine("Attacking");
     }
 
     private IEnumerator ZombieCheck()                                 //Coroutine to Keep bystander checking for Zombies nearby
     {
-        refPoscheckWait = Random.Range(1f, 2.5f);
-        yield return new WaitForSeconds(refPoscheckWait);
+        checkWait = Random.Range(1f, 2.5f);
+        yield return new WaitForSeconds(checkWait);
 
-        if (refPosattacking == false)
+        if (attacking == false)
         {
-            if (refPosdestinationSet == false)
+            if (destinationSet == false)
             {
-                refPosclosestZombie = FindClosestZombie();
-                refPosdistToZombie = Vector2.Distance(this.transform.position, refPosclosestZombie.transform.position);
-                if (refPosdistToZombie < refPosmaxDist)
+                closestZombie = FindClosestZombie();
+                distToZombie = Vector2.Distance(this.transform.position, closestZombie.transform.position);
+                if (distToZombie < maxDist)
                 {
                     CalcDest();
                 }
@@ -380,89 +380,86 @@ public class BystanderController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        GameObject refPoscollided = col.gameObject;
-        
+        GameObject collided = col.gameObject;
         if (thisBystander == BystanderType.Euphoric)
         {
-            if (refPoscollided.name == "BorderU")
+            if (collided.name == "BorderU")
             {
-                refPoseuphoricDirection.y = refPoseuphoricDirection.y * - 1;
+                euphoricDirection.y = euphoricDirection.y * - 1;
             }
 
-            if (refPoscollided.name == "BorderR")
+            if (collided.name == "BorderR")
             {
-                refPoseuphoricDirection.x = refPoseuphoricDirection.x * -1;
+                euphoricDirection.x = euphoricDirection.x * -1;
             }
 
-            if (refPoscollided.name == "BorderD")
+            if (collided.name == "BorderD")
             {
-                refPoseuphoricDirection.y = refPoseuphoricDirection.y * -1;
+                euphoricDirection.y = euphoricDirection.y * -1;
             }
 
-            if (refPoscollided.name == "BorderL")
+            if (collided.name == "BorderL")
             {
-                refPoseuphoricDirection.x = refPoseuphoricDirection.x * -1;
+                euphoricDirection.x = euphoricDirection.x * -1;
             }
-            if (refPoscollided.tag == "Zombie")
+            if (collided.tag == "Zombie")
             {
                 
-                if (refPoscollided.name == "ZombieLeader")
+                if (collided.name == "ZombieLeader")
                 {
-                    var enemy = refPoscollided.GetComponent<ZombieLeaderController>();
-                    enemy.DamageDone(refPosstrength);
+                    var enemy = collided.GetComponent<ZombieLeaderController>();
+                    enemy.DamageDone(strength);
                 }
 
-                if (refPoscollided.name == "Zombie")
+                if (collided.name == "Zombie")
                 {
-                    var enemy = refPoscollided.GetComponent<ZombieController>();
-                    enemy.DamageDone(refPosstrength);
+                    var enemy = collided.GetComponent<ZombieController>();
+                    enemy.DamageDone(strength);
                 }
             }
         }
         else
         {
-            if (refPoscollided.name == "BorderU")
+            if (collided.name == "BorderU")
             {
-                refPosonUBorder = true;
-                refPosdestinationSet = false;
+                onUBorder = true;
+                destinationSet = false;
             }
 
-            if (refPoscollided.name == "BorderR")
+            if (collided.name == "BorderR")
             {
-                refPosonRBorder = true;
-                refPosdestinationSet = false;
+                onRBorder = true;
+                destinationSet = false;
                 if (thisBystander == BystanderType.Smart)
                 {
-                    refPosdestinationSet = false;
-                    enemyChar = refPoscollided;
+                    enemyChar = FindClosestZombie();
                     StartCoroutine("Attacking");
                 }
             }
 
-            if (refPoscollided.name == "BorderD")
+            if (collided.name == "BorderD")
             {
-                refPosonDBorder = true;
-                refPosdestinationSet = false;
+                onDBorder = true;
+                destinationSet = false;
             }
 
-            if (refPoscollided.name == "BorderL")
+            if (collided.name == "BorderL")
             {
-                refPosonLBorder = true;
-                refPosdestinationSet = false;
+                destinationSet = false;
                 if (thisBystander == BystanderType.Smart)
                 {
-                    refPosdestinationSet = false;
-                    enemyChar = refPoscollided;
+                    destinationSet = false;
+                    enemyChar = FindClosestZombie();
                     StartCoroutine("Attacking");
                 }
             }
 
-            if (refPoscollided.tag == "Zombie")
+            if (collided.tag == "Zombie")
             {
                 if (thisBystander == BystanderType.Brave)
                 {
-                    refPosdestinationSet = false;
-                    enemyChar = refPoscollided;
+                    destinationSet = false;
+                    enemyChar = collided;
                     StartCoroutine("Attacking");
                 }
             }
@@ -471,6 +468,8 @@ public class BystanderController : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
+        GameObject collided = col.gameObject;
+        enemyChar = collided.gameObject;
         switch (thisBystander)
         {
             case BystanderType.Shocked:
@@ -478,30 +477,31 @@ public class BystanderController : MonoBehaviour
             case BystanderType.Frightened:
                 break;
             case BystanderType.Smart:
-                if (refPosonLBorder == true)
+                if (onLBorder == true)
                 {
-                    if (col.gameObject.tag == "Zombie")
+                    if (collided.tag == "Zombie")
                     {
-                        enemyChar = col.gameObject;
-                        refPosattacking = true;
+                        destinationSet = false;
+                        attacking = true;
                     }
                 }
-                else if (refPosonRBorder == true)
+                else if (onRBorder == true)
                 {
-                    if (col.gameObject.tag == "Zombie")
+                    if (collided.tag == "Zombie")
                     {
-                        enemyChar = col.gameObject;
-                        refPosattacking = true;
+                        destinationSet = false;
+                        attacking = true;
                     }
                 }
                 break;
             case BystanderType.Euphoric:
                 break;
             case BystanderType.Brave:
-                if (col.gameObject.tag == "Zombie")
+
+                if (collided.tag == "Zombie")
                 {
-                    enemyChar = col.gameObject;
-                    refPosattacking = true;
+                    destinationSet = false;
+                    attacking = true;
                 }
                 break;
         }
@@ -509,6 +509,8 @@ public class BystanderController : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D col)
     {
+        GameObject collided = col.gameObject;
+        enemyChar = collided.gameObject;
         switch (thisBystander)
         {
             case BystanderType.Shocked:
@@ -516,20 +518,18 @@ public class BystanderController : MonoBehaviour
             case BystanderType.Frightened:
                 break;
             case BystanderType.Smart:
-                if (col.gameObject.tag == "Zombie")
+                if (collided.tag == "Zombie")
                 {
-                    enemyChar = col.gameObject;
-                    refPosattacking = false;
+                    attacking = false;
                     StopCoroutine("Attacking");
                 }
                 break;
             case BystanderType.Euphoric:
                 break;
             case BystanderType.Brave:
-                if (col.gameObject.tag == "Zombie")
+                if (collided.tag == "Zombie")
                 {
-                    enemyChar = col.gameObject;
-                    refPosattacking = false;
+                    attacking = false;
                     StopCoroutine("Attacking");
                 }
                 break;
