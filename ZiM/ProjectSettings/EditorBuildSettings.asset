@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainSc.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/MenuSc.unity
+    guid: 4b05865d8a71e47929244704ff816c9e
+  - enabled: 1
+    path: Assets/Scenes/ConfigurationSc.unity
+    guid: 0a61237ab99f04fd7b31d74d21a5f57d
+  - enabled: 1
+    path: Assets/Scenes/GameCurrencyShopSc.unity
+    guid: b3f982fe06ef94237ac9afe35f50e442
+  - enabled: 1
+    path: Assets/Scenes/ItemCollectionSc.unity
+    guid: cad395d35038e4b6ea3c92c8b7b29eec
+  - enabled: 1
+    path: Assets/Scenes/MansionDetailSc.unity
+    guid: 110424b12c7314301a2a012631409101
+  - enabled: 1
+    path: Assets/Scenes/PrivacySc.unity
+    guid: 0aed036680e09446bbc4155d20bcc6ab
+  - enabled: 1
+    path: Assets/Scenes/CollectSendSc.unity
+    guid: 3d690409ef4284190aa64d43f23c3607
+  - enabled: 1
+    path: Assets/Scenes/InfectationSendSc.unity
+    guid: 5568779f7f4cb4b22bfc116c4e6936ff
+  - enabled: 1
+    path: Assets/Scenes/MapSc.unity
+    guid: 5c3abd78f17f44f14a1cf1f86ad6695e
+  - enabled: 1
+    path: Assets/Scenes/MinigameSendSc.unity
+    guid: 1580233815e614590b93a0fdab31c9fa
+  - enabled: 1
+    path: Assets/Scenes/RealMoneyShopSc.unity
+    guid: aa88831bef81e4015a2df326ffd8fd33
+  - enabled: 1
+    path: Assets/Scenes/ZombieWardrobeSc.unity
+    guid: 123a3318da7664a779c3cbecbf4d5e78
+  - enabled: 1
+    path: Assets/Scenes/MinigameSc.unity
+    guid: d44798140de634920b2af8b811179bf8
+  m_configObjects: {}
