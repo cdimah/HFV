@@ -8,6 +8,7 @@ TagManager:
   - Zombie
   - Bystander
   - Border
+  - City
   layers:
   - Default
   - TransparentFX
