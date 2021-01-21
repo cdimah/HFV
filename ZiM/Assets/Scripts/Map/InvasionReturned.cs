@@ -38,7 +38,6 @@ public class InvasionReturned : MonoBehaviour
         else
         {
             TotalText.text = "You have a total of " + totalZombies + " Zombies.";
-
         }
     }
 

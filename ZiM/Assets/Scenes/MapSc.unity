@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -528,6 +529,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -721,7 +723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54441c2d0bf90485f83789418c78a77b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invasionRestSecs: 300
+  invasionRestSecs: 20
   UIPrefab: {fileID: 9198005391418478838, guid: ebe35bdf8a84d48a59d9abe2d3cf49ab,
     type: 3}
   invasionResultWin: {fileID: 452877098330425156, guid: c6ed22c6e19f54811b1f49dc1a57cba2,
@@ -783,6 +785,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
