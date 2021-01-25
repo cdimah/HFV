@@ -26,8 +26,7 @@ public class ConfirmationWi : MonoBehaviour
     public Text bystanderText;
     public Text numberOfZombies;
     public Text leaderStatusText;
-
-
+    public Text warningText;
 
     bool invasionSelected = false;
     bool collectSelected = false;
@@ -49,7 +48,6 @@ public class ConfirmationWi : MonoBehaviour
 
     void Start()
     {
-
         invasionButton.onClick.AddListener(InvasionOn);
         collectButton.onClick.AddListener(CollectOn);
         minigameButton.onClick.AddListener(MinigameOn);
@@ -77,7 +75,6 @@ public class ConfirmationWi : MonoBehaviour
         {
             minigameButton.interactable = true;
             leaderStatusText.text = "";
-
         }
         else
         {
@@ -170,11 +167,11 @@ public class ConfirmationWi : MonoBehaviour
     {
         if(zombsToSend >= availableZombies)
         {
-            Debug.Log("You don't control enough Zombies");
+            warningText.text = "You don't control enough Zombies";
 
         } else if(zombsToSend == maxZombies)
         {
-            Debug.Log("You reached the maximum number of Zombies");
+            warningText.text = "You can't send more Zombies";
         } else
         {
             zombsToSend += 1;
@@ -186,7 +183,7 @@ public class ConfirmationWi : MonoBehaviour
     {
         if (zombsToSend == minZombies)
         {
-            Debug.Log("You can´t send less Zombies");
+            warningText.text = "You can´t send less Zombies";
         }
         else
         {
@@ -219,7 +216,6 @@ public class ConfirmationWi : MonoBehaviour
                     GameController.zombSentInvTokio = zombsToSend;
                 }
 
-                Debug.Log("Send Zombies to invade");
                 GameController.qZombies -= zombsToSend;
                 GameController.anotherWindow = false;
                 Destroy(gameObject);
@@ -229,20 +225,22 @@ public class ConfirmationWi : MonoBehaviour
                 if (cityName == "Mexico")
                 {
                     GameController.collTimeMexico = (ulong)DateTime.Now.Ticks;
+                    GameController.mexicoCollecting = true;
+                    GameController.zombSentCollMexico = zombsToSend;
                 }
                 else if (cityName == "NewYork")
                 {
                     GameController.collTimeNewYork = (ulong)DateTime.Now.Ticks;
+                    GameController.newYorkCollecting = true;
+                    GameController.zombSentCollNewYork = zombsToSend;
                 }
                 else if (cityName == "Tokio")
                 {
                     GameController.collTimeTokio = (ulong)DateTime.Now.Ticks;
+                    GameController.tokioCollecting = true;
+                    GameController.zombSentCollTokio = zombsToSend;
                 }
-                Debug.Log("Send Zombies to collect");
                 GameController.qZombies -= zombsToSend;
-                //Include time to wait.
-                Debug.Log("" + zombsToSend + " left to collect");
-                Debug.Log("You have a total of " + GameController.qZombies + " left");
 
                 Destroy(gameObject);
             }
@@ -256,11 +254,11 @@ public class ConfirmationWi : MonoBehaviour
                 GameController.numBystanders = numBystanders;
                 GameController.citySize = citySize;
                 GameController.anotherWindow = false;
-                SceneManager.LoadScene("MinigameSC");
+                SceneManager.LoadScene("MinigameSc");
             }
         } else
         {
-            Debug.Log("You need to control more zombies");
+            warningText.text = "You need to control more zombies";
         }
     }
 }

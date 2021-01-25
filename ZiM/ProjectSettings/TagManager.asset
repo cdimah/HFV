@@ -9,6 +9,8 @@ TagManager:
   - Bystander
   - Border
   - City
+  - ItemControllerTag
+  - Window
   layers:
   - Default
   - TransparentFX

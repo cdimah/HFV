@@ -724,9 +724,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invasionRestSecs: 20
+  collectRestSecs: 5
   UIPrefab: {fileID: 9198005391418478838, guid: ebe35bdf8a84d48a59d9abe2d3cf49ab,
     type: 3}
   invasionResultWin: {fileID: 452877098330425156, guid: c6ed22c6e19f54811b1f49dc1a57cba2,
+    type: 3}
+  collectResultWin: {fileID: 926610847936358302, guid: 1ce3ce1472b8f4e9ab9e8cd2216b3aa8,
     type: 3}
   mexicoCountdown: {fileID: 865162716}
   newYorkCountdown: {fileID: 42582764}

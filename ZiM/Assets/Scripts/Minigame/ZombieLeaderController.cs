@@ -35,7 +35,7 @@ public class ZombieLeaderController : MonoBehaviour
         float zRef;
         zRef = targetPosition.y;
         targetPosition.z = zRef;
-        transform.position =  targetPosition;
+        transform.position = targetPosition;
     }
     /*
         In the 2 first lines of code is defined the Healt of the Zombie.

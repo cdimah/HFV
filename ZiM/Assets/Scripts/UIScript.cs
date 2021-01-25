@@ -13,14 +13,15 @@ public class UIScript : MonoBehaviour
     public Text zombiesAvailable;
     public Text leaderAvailable;
     public Text currency;
-    public Image Zombie;
-    public Image Leader;
+    public Image leader;
+    public Image zombie;
+    public Image coin;
 
     void Awake()
     {
         Scene currentScene = SceneManager.GetActiveScene();
         string sceneName = currentScene.name;
-        if (sceneName == "MainSC")
+        if (sceneName == "MainSc")
         {
             Destroy(homeButton.gameObject);
         }
@@ -32,9 +33,30 @@ public class UIScript : MonoBehaviour
             Destroy(homeButton.gameObject);
             Destroy(zombiesAvailable.gameObject);
             Destroy(leaderAvailable.gameObject);
-            Destroy(Zombie.gameObject);
-            Destroy(Leader.gameObject);
+            Destroy(zombie.gameObject);
+            Destroy(leader.gameObject);
+            Destroy(currency.gameObject);
+            Destroy(coin.gameObject);
         }
+        else if (sceneName == "ItemDisplaySc")
+        {
+            Destroy(menuButton.gameObject);
+            Destroy(zombiesAvailable.gameObject);
+            Destroy(leaderAvailable.gameObject);
+            Destroy(zombie.gameObject);
+            Destroy(leader.gameObject);
+            Destroy(currency.gameObject);
+            Destroy(coin.gameObject);
+        }
+        else if (sceneName == "CollectSc")
+        {
+            Destroy(homeButton.gameObject);
+            Destroy(menuButton.gameObject);
+            Destroy(zombiesAvailable.gameObject);
+            Destroy(leaderAvailable.gameObject);
+            Destroy(zombie.gameObject);
+            Destroy(leader.gameObject);
+        } 
 
     }
 
@@ -71,7 +93,12 @@ public class UIScript : MonoBehaviour
                 leaderAvailable.text = t;
             }
         }
-        
+
+        if(coin)
+        {
+            currency.text = "" + GameController.currency;
+        }
+
     }
 
     void goHome()
@@ -81,6 +108,6 @@ public class UIScript : MonoBehaviour
 
     void openMenu()
     {
-        Debug.Log("This opens a menu");
+        SceneManager.LoadScene("ItemDisplaySc");
     }
 }

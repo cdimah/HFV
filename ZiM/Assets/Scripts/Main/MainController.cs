@@ -33,7 +33,7 @@ public class MainController : MonoBehaviour
         CreateLeader();
     }
 
-    void CreateZombie()
+    public void CreateZombie()
     {
         float setPositionX = Random.Range(Camera.main.transform.position.x - (width / 2) + 2f, Camera.main.transform.position.x + mansionSizeX - 2f - width / 2);
         float setPositionY = Random.Range(-1f, -(height / 2) + 1f);
