@@ -121,36 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &40645701
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 40645702}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &40645702
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 40645701}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: -0.59, z: -589.66064}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &436731554
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,29 +155,58 @@ MonoBehaviour:
   presentWindow: {fileID: 4519877226606464516, guid: 04993814522a64798af3b4cba982fd5d,
     type: 3}
   zombie: {fileID: 1122913736091596525, guid: ed5353951f17b40c98c115fa9ab94f6d, type: 3}
+  raccoon: {fileID: 1122913736091596525, guid: 894d47c404c2a4a75a2a2b17fadb0e17, type: 3}
   trash: {fileID: 6935279334771806292, guid: e03278eedf03345f4be63060f2775ab9, type: 3}
   item: {fileID: 0}
   currency: {fileID: 4257801917382928232, guid: 6778129a4e7d94c64b1c28a2006ca5ac,
     type: 3}
   clothes: {fileID: 8225779581085280794, guid: ae34afe9e6e5e4c59894c8716c806548, type: 3}
-  mexicoItems:
+  collectibles:
   - {fileID: 3371142850600989860, guid: 01d9dff9d8d49443cb60935a36ebc8a5, type: 3}
   - {fileID: 3371142850600989860, guid: f622879f1239f4687a6ebed23051f2f3, type: 3}
   - {fileID: 3371142850600989860, guid: 57c4661551232404c98ea8069f0a8f3f, type: 3}
   - {fileID: 3371142850600989860, guid: 81f7d65fc19654596a10742fae632eb7, type: 3}
   - {fileID: 3371142850600989860, guid: 031e84221cfdc4119a2ca4dfdbd694cd, type: 3}
-  newYorkItems:
   - {fileID: 3371142850600989860, guid: 0b02d00351fed49868f2e7427bd0e7d5, type: 3}
   - {fileID: 3371142850600989860, guid: b480439ddcda943cb84e5a3a4f0c49ee, type: 3}
   - {fileID: 3371142850600989860, guid: b03f8c0d2165642889d08558725e1ca8, type: 3}
   - {fileID: 3371142850600989860, guid: abdef5bda08304692918a5d78f761266, type: 3}
   - {fileID: 3371142850600989860, guid: 0fa545697c2e84e2b917f2e1b8d4d48d, type: 3}
-  tokioItems:
   - {fileID: 3371142850600989860, guid: fb257eadc6a1a4551ad745cc4f0db13f, type: 3}
   - {fileID: 3371142850600989860, guid: 55f7bae317e2d4084a6c7ce768e952d4, type: 3}
   - {fileID: 3371142850600989860, guid: 849d1e42ea134488ca286d41e85085ab, type: 3}
   - {fileID: 3371142850600989860, guid: 25373204adc40484b9c250ab9813bb3b, type: 3}
   - {fileID: 3371142850600989860, guid: a418660a52fe94f5599c9a4cf6fd7c1b, type: 3}
+  head:
+  - {fileID: 1194486349387467984, guid: 93b041514fe90417996ba5744956084e, type: 3}
+  - {fileID: 6338063787271922589, guid: efca14d1959134db49df8257d86f1f3d, type: 3}
+  - {fileID: 8591021254975926830, guid: 7bbf524dc7e7c4120be9366940238bde, type: 3}
+  - {fileID: 4180408707798974611, guid: 89cacb65ed78c4a089f23f12fbec5f11, type: 3}
+  - {fileID: 4255633906339044016, guid: c00027b990d4e47eda6140153c4e7d58, type: 3}
+  - {fileID: 3625793029213976175, guid: 32c78d4ef5125469a9643f4dbc4cf2e7, type: 3}
+  - {fileID: 3881682342540489258, guid: 74a0cef90d22f4b83a809643e8026146, type: 3}
+  - {fileID: 5723694725654329818, guid: 0e10d744926924025b6d9b2fed60c833, type: 3}
+  - {fileID: 3003583454154045359, guid: e9c5a4db4c63e4e8da36a13256d72f29, type: 3}
+  body:
+  - {fileID: 204516396790008971, guid: a94e15a1784ce41f9bbd55622f961c94, type: 3}
+  - {fileID: 4645531037283646935, guid: 185aea925287d4d069d77ac599a81ecc, type: 3}
+  - {fileID: 4335632114023515056, guid: 62623d3997bdf4c52ba4a1e147ace157, type: 3}
+  - {fileID: 1479290158136497283, guid: 8683748d0249340ffa012baea694ea2a, type: 3}
+  - {fileID: 4080259269424004810, guid: d4f77014d44574fde8d90191661f7725, type: 3}
+  - {fileID: 7491016830013167696, guid: 9a7766ce1f1984350b7c79e37736ce9a, type: 3}
+  - {fileID: 4000046881239026144, guid: babdf162227ad4500a4b2d91d219a922, type: 3}
+  - {fileID: 1069127606874259099, guid: 4ddda8d94187d44a8b4bd23bece39efa, type: 3}
+  - {fileID: 1775101594020715122, guid: 658ead48cac434d469acc37469d1cc3f, type: 3}
+  legs:
+  - {fileID: 176183284698201809, guid: 2e88f694bd43746ada26539f51df6d8c, type: 3}
+  - {fileID: 4838257064266781462, guid: e1ad38b193daa4c31a598053193bcecd, type: 3}
+  - {fileID: 5866288519576595813, guid: 5cb09d5e637964001b1fe4a35485b804, type: 3}
+  - {fileID: 5330633250771249151, guid: cff99e2ae40b84a3aac73acafe57996e, type: 3}
+  - {fileID: 5656657696878564564, guid: 8a1437e5a3469423ab6c187fb12670e9, type: 3}
+  - {fileID: 5595142279266076632, guid: 165280d5052d44661b9345897ca0681a, type: 3}
+  - {fileID: 8234067405824312768, guid: 90a8679a24cd643e09f6920b1ec6d5f9, type: 3}
+  - {fileID: 8271077749048930231, guid: 8be74906904444fb9be53f82838c8e6f, type: 3}
+  - {fileID: 3868537687375224879, guid: 6eb4696f1cd164f658e16eb4ed1f64dd, type: 3}
 --- !u!4 &436731556
 Transform:
   m_ObjectHideFlags: 0

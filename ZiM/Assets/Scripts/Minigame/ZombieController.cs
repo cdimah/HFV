@@ -16,7 +16,6 @@ public class ZombieController : MonoBehaviour
     float speed = 4f;               //Initial speed of the player.
     float checkWait;                //Seconds the player will wait before cecking if in area.
     float damageWait;               //Seconds the player will wait  to make damage.
-    float strength = 2;             //Variable used to define how much damage will deal.
     float setPositionX;             //Variable to calculate position X inside the circle.
     float setPositionY;             //Variable to calculate position Y inside the circle.
     float zRef;                     //Variable used to assign y axis value to z axis.
@@ -34,7 +33,8 @@ public class ZombieController : MonoBehaviour
     GameObject sceneController;     //Scene controller object to count the number of lost zombies.
     SceneController sceneControllerScript;  //SceneController script declaration to be able to modify the numer of lost zombies.
     public float Healthpoints;      //Remaining life of the character.
-    public float MaxHealthpoints = 10;      //Maximum healtpoints of the character.
+    public float MaxHealthpoints;   //Maximum healtpoints of the character.
+    public float strength;          //Variable used to define how much damage will deal.
     public HealthBarController Healthbar;   //Declaration of the Healthbar of this character.
 
     void Start()
@@ -295,7 +295,10 @@ public class ZombieController : MonoBehaviour
         Healthbar.SetHealth(Healthpoints, MaxHealthpoints);
         if (Healthpoints <= 0)
         {
-            sceneControllerScript.lostZombies += 1;
+            if(gameObject.name == "Zombie")
+            {
+                sceneControllerScript.lostZombies += 1;
+            }
             Destroy(gameObject);
         }
     }

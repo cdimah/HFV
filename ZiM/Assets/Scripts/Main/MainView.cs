@@ -25,11 +25,19 @@ public class MainView : MonoBehaviour
         
         if (Input.GetMouseButton(0))
         {
-            diference = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Camera.main.transform.position;
-            if (drag == false)
+            GameObject window = GameObject.FindWithTag("Window");
+            if (window)
             {
-                drag = true;
-                origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            }
+            else
+            {
+                diference = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Camera.main.transform.position;
+                if (drag == false)
+                {
+                    drag = true;
+                    origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                }
             }
         }
         else

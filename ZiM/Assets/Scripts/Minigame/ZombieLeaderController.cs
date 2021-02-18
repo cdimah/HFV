@@ -12,7 +12,6 @@ public class ZombieLeaderController : MonoBehaviour
     bool destinationSet;           //Destination point is set.
     bool attacking;                //Used to know if the zombie is attacking.
     float damageWait;              //Seconds the player will wait  to make damage.
-    float strength = 3;            //Variable used to define how much damage will deal.
     float speed = 4;               //Initial speed of the player.
     float distToBystander;         //Distance to calculate how far away from bystander.
     float maxBDist = 3;            //Distace at which the zombie will atemp to attack a bystander.
@@ -20,13 +19,36 @@ public class ZombieLeaderController : MonoBehaviour
     Collider2D coll;               //Collider for interactions.
     GameObject closestBystander;   //GameObject to calculate distance between the zombie and closest bystander
     GameObject enemy;              //Bystander that is being attacked.
+    public GameObject head;        //Gameobject to show selected head.
+    public GameObject body;        //Gameobject to show selected body.
+    public GameObject legs;        //Gameobject to show selected legs.
+    SpriteRenderer headSR;
+    SpriteRenderer bodySR;
+    SpriteRenderer legsSR;
 
     public float Healthpoints;                  //Remaining life of the character.
-    public float MaxHealthpoints = 10;          //Maximum healtpoints of the character.
+    public float MaxHealthpoints;               //Maximum healtpoints of the character.
+    public float strength;                      //Variable used to define how much damage will deal.
     public HealthBarController Healthbar;       //Declaration of the Healthbar of this character.
 
     void Start()
     {
+        headSR = head.GetComponent<SpriteRenderer>();
+        bodySR = body.GetComponent<SpriteRenderer>();
+        legsSR = legs.GetComponent<SpriteRenderer>();
+        head = GameController.head;
+        if (GameController.head)
+        {
+            headSR.sprite = GameController.head.GetComponent<SpriteRenderer>().sprite;
+        }
+        if (GameController.body)
+        {
+            bodySR.sprite = GameController.body.GetComponent<SpriteRenderer>().sprite;
+        }
+        if (GameController.legs)
+        {
+            legsSR.sprite = GameController.legs.GetComponent<SpriteRenderer>().sprite;
+        }
         Healthpoints = MaxHealthpoints;
         Healthbar.SetHealth(Healthpoints, MaxHealthpoints);
         coll = GetComponent<Collider2D>();     

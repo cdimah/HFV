@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class CollectReturned : MonoBehaviour
 {
+    public int cityIndex;
     public string cityName;
     public Text collectReturnText;
     public Button acceptButton;
@@ -20,7 +21,7 @@ public class CollectReturned : MonoBehaviour
 
     void GoCollectScene()
     {
-        GameController.collectedCity = cityName;
+        GameController.collectedCity = cityIndex;
         SceneManager.LoadScene("CollectSc");
     }
 }

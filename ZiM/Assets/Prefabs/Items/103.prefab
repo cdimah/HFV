@@ -51,6 +51,8 @@ MonoBehaviour:
   itemDescription: 
   itemCity: 
   itemSelected: {fileID: 0}
+  itemDisplay: {fileID: 6743002917733902000, guid: c0fa54cb87d63462892fa765c82ce7e2,
+    type: 3}
   itemData: {fileID: 11400000, guid: aacfcf288b8e347fa9b9578d34405c14, type: 2}
 --- !u!212 &9099756360414038227
 SpriteRenderer:

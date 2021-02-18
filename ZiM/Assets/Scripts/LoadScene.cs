@@ -9,7 +9,15 @@ public class LoadScene : MonoBehaviour
 
     private void OnMouseDown()
     {
-        SceneManager.LoadScene(scene);
+        GameObject window = GameObject.FindWithTag("Window");
+        if (window)
+        {
+
+        }
+        else
+        {
+            SceneManager.LoadScene(scene);
+        }
     }
     /*
         When touched, the containing object will load the indicated Scene.

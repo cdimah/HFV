@@ -12,6 +12,7 @@ public class SceneController : MonoBehaviour
     public float sceneSizeX;                //Length of the Scene on the "x" axis.
     public GameObject zombiePrefab;         //Gameobject to be able to create the Zombies.
     public GameObject bystanderPrefab;      //Gameobject to be able to create the Bystanders.
+    public GameObject dogPrefab;            //Gameobject to be able to create the ZombieDog.
     public GameObject resScript;            //Gameobject made to create de Results review at the end of the minigame.
     public GameObject UIPrefab;             //Create the Game Object that shows the UI.
 
@@ -39,6 +40,38 @@ public class SceneController : MonoBehaviour
             float positionY = Random.Range(height / 2f - 2.5f, 2f -height / 2f);
             Vector2 bysPosition = new Vector2(positionX, positionY);
             CreateBystander(bysPosition);
+        }
+
+        if(GameController.zombieDog == true)
+        {
+            Vector2 leadRef = GameObject.Find("ZombieLeader").transform.position;
+            float setPositionX;
+            float setPositionY;
+            int select = Random.Range(1, 5);
+            if (select == 1)
+            {
+                setPositionX = 1f;
+                setPositionY = 1f;
+            }
+            else if (select == 2)
+            {
+                setPositionX = 1f;
+                setPositionY = -1f;
+            }
+            else if (select == 3)
+            {
+                setPositionX = -1f;
+                setPositionY = 1f;
+            }
+            else
+            {
+                setPositionX = -1f;
+                setPositionY = -1f;
+            }
+
+            leadRef.x = leadRef.x + (Random.Range(0f, 4.5f) * setPositionX);
+            leadRef.y = leadRef.y + (Random.Range(0f, 3f) * setPositionY);
+            CreateDog(leadRef);
         }
 
         for (zom = numZombies; zom > 0; zom--)
@@ -87,6 +120,12 @@ public class SceneController : MonoBehaviour
         {
             FinishLevel();
         }
+
+        int zombiesLeft = GameObject.FindGameObjectsWithTag("Zombie").Length;
+        if (zombiesLeft == 0 && finishedLevel == false)
+        {
+            FinishLevel();
+        }
     }
 
     public void CreateZombie(Vector2 origin)
@@ -108,13 +147,24 @@ public class SceneController : MonoBehaviour
         CreatBystander() function creates a Bystander with the name Bystander. Nothing more =p
     */
 
+    public void CreateDog(Vector2 origin)
+    {
+        GameObject newDog = Instantiate(dogPrefab, origin, Quaternion.identity);
+        newDog.name = "ZombieDog";
+    }
+
     public void FinishLevel()
     {
         finishedLevel = true;
         int zombiesLeft = GameObject.FindGameObjectsWithTag("Zombie").Length;
         GameObject leader;
         leader = GameObject.Find("ZombieLeader");
+        GameObject dog = GameObject.Find("ZombieDog");
         if(leader != null)
+        {
+            zombiesLeft -= 1;
+        }
+        if (dog != null)
         {
             zombiesLeft -= 1;
         }

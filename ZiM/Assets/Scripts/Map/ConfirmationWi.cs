@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class ConfirmationWi : MonoBehaviour
 {
     public string cityName;
+    public int cityIndex;
     public int numBystanders;
     public int minZombies;
     public int maxZombies;
@@ -198,49 +199,31 @@ public class ConfirmationWi : MonoBehaviour
         {
             if (invasionSelected == true)
             {
-                if(cityName == "Mexico")
-                {
-                    GameController.invTimeMexico = (ulong)DateTime.Now.Ticks;
-                    GameController.mexicoInvaded = true;
-                    GameController.zombSentInvMexico = zombsToSend;
-                } else if(cityName == "NewYork")
-                {
-                    GameController.invTimeNewYork = (ulong)DateTime.Now.Ticks;
-                    GameController.newYorkInvaded = true;
-                    GameController.zombSentInvNewYork = zombsToSend;
-                }
-                else if(cityName == "Tokio")
-                {
-                    GameController.invTimeTokio = (ulong)DateTime.Now.Ticks;
-                    GameController.tokioInvaded = true;
-                    GameController.zombSentInvTokio = zombsToSend;
-                }
-
+                GameController.invasionTime[cityIndex] = (ulong)DateTime.Now.Ticks;
+                GameController.cityInvaded[cityIndex] = true;
+                GameController.zombsSentToInvade[cityIndex] = zombsToSend;
                 GameController.qZombies -= zombsToSend;
                 GameController.anotherWindow = false;
                 Destroy(gameObject);
             }
             else if (collectSelected == true)
             {
-                if (cityName == "Mexico")
-                {
-                    GameController.collTimeMexico = (ulong)DateTime.Now.Ticks;
-                    GameController.mexicoCollecting = true;
-                    GameController.zombSentCollMexico = zombsToSend;
-                }
-                else if (cityName == "NewYork")
-                {
-                    GameController.collTimeNewYork = (ulong)DateTime.Now.Ticks;
-                    GameController.newYorkCollecting = true;
-                    GameController.zombSentCollNewYork = zombsToSend;
-                }
-                else if (cityName == "Tokio")
-                {
-                    GameController.collTimeTokio = (ulong)DateTime.Now.Ticks;
-                    GameController.tokioCollecting = true;
-                    GameController.zombSentCollTokio = zombsToSend;
-                }
+                GameController.collectTime[cityIndex] = (ulong)DateTime.Now.Ticks;
+                GameController.cityCollecting[cityIndex] = true;
+                GameController.zombsSentToCollect[cityIndex] = zombsToSend;
                 GameController.qZombies -= zombsToSend;
+                if(GameController.fashionMagazineUsed == true)
+                {
+                    GameController.fashionMagazineCity[cityIndex] = true;
+                }
+
+                if (GameController.geekGlassesUsed == true)
+                {
+                    GameController.geekGlassesCity[cityIndex] = true;
+                }
+
+                GameController.fashionMagazineUsed = false;
+                GameController.geekGlassesUsed = false;
 
                 Destroy(gameObject);
             }

@@ -89,7 +89,7 @@ public class UIScript : MonoBehaviour
                 int minutes = ((int)(dif % 3600) / 60);
                 dif -= (dif % 3600) / 60;
                 int hours = ((int)dif / 3600);
-                string t = "Leader will be rested in: " + hours + "h " + minutes + "m " + seconds + "s.";
+                string t = "Rested in: " + minutes + "m.";
                 leaderAvailable.text = t;
             }
         }

@@ -79,7 +79,7 @@ public class BystanderController : MonoBehaviour
                 break;
             case BystanderType.Smart:
                 refPosspeed = 4;
-                refPosstrength = 1;
+                refPosstrength = 2;
                 refPosmySR.color = Color.green;
                 break;
             case BystanderType.Euphoric:
@@ -111,7 +111,7 @@ public class BystanderController : MonoBehaviour
                 break;
             case BystanderType.Brave:
                 refPosspeed = 3;
-                refPosstrength = 2;
+                refPosstrength = 3;
                 refPosmySR.color = Color.yellow;
                 break;
         }
@@ -328,9 +328,13 @@ public class BystanderController : MonoBehaviour
         Healthbar.SetHealth(Healthpoints, MaxHealthpoints);
         if (Healthpoints <= 0)
         {
-            GameObject refPoscontroller = GameObject.Find("SceneController");
-            var controller = refPoscontroller.GetComponent<SceneController>();
-            controller.CreateZombie(transform.position);
+            int turnChance = Random.Range(1, 4);
+            if(turnChance >= 2)
+            {
+                GameObject refPoscontroller = GameObject.Find("SceneController");
+                var controller = refPoscontroller.GetComponent<SceneController>();
+                controller.CreateZombie(transform.position);
+            }
             Destroy(gameObject);
         }
     }

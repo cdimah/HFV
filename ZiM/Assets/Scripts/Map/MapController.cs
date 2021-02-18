@@ -19,6 +19,14 @@ public class MapController : MonoBehaviour
     [SerializeField] TMP_Text newYorkCountdown;
     [SerializeField] TMP_Text tokioCountdown;
 
+    public enum CityType       //List of citys.
+    {
+        Mexico,
+        NewYork,
+        Tokio
+    }
+
+    CityType thisCity;
 
     void Start()
     {
@@ -35,109 +43,65 @@ public class MapController : MonoBehaviour
     void checkInvadedCities()
     {
         GameObject confWin = GameObject.FindGameObjectWithTag("Window");
-        if(confWin)
+        if (confWin)
         {
 
         }
         else
         {
-            if (GameController.mexicoInvaded == true)
+            for(int i = 0; i < GameController.numberOfCities; i++)
             {
-                mexicoCountdown.enabled = true;
-                if (invasionRestSecs * 10000000 + GameController.invTimeMexico < (ulong)DateTime.Now.Ticks)
+                if(GameController.cityInvaded[i] == true)
                 {
-                    float multiplier = UnityEngine.Random.Range(1.2f, 1.5f);
-                    int newZombies = Mathf.RoundToInt(GameController.zombSentInvMexico * multiplier);
-                    GameController.qZombies += (GameController.zombSentInvMexico + newZombies);
-                    invWin = Instantiate(invasionResultWin, new Vector2(0, 0), Quaternion.identity);
-                    if (GameController.qZombies > GameController.maxZombies)
+                    string cityName = "";
+                    TMP_Text cityCountdown = mexicoCountdown;
+                    thisCity = (CityType)i;
+                    switch (thisCity)
                     {
-                        GameController.qZombies = GameController.maxZombies;
+                        case CityType.Mexico:
+                            cityCountdown = mexicoCountdown;
+                            cityName = "Mexico";
+                            break;
+                        case CityType.NewYork:
+                            cityCountdown = newYorkCountdown;
+                            cityName = "New York";
+                            break;
+                        case CityType.Tokio:
+                            cityCountdown = tokioCountdown;
+                            cityName = "Tokio";
+                            break;
                     }
-                    invWin.GetComponent<InvasionReturned>().cityName = "Mexico";
-                    invWin.GetComponent<InvasionReturned>().transformedZombies = newZombies;
-                    invWin.GetComponent<InvasionReturned>().sentZombies = GameController.zombSentInvMexico;
-                    invWin.GetComponent<InvasionReturned>().totalZombies = GameController.qZombies;
-                    GameController.mexicoInvaded = false;
-                    mexicoCountdown.enabled = false;
-                }
-                else
-                {
-                    ulong dif = (invasionRestSecs * 10000000 + GameController.invTimeMexico - (ulong)DateTime.Now.Ticks) / 10000000;
-                    int seconds = ((int)dif % 60);
-                    dif -= dif % 60;
-                    int minutes = ((int)(dif % 3600) / 60);
-                    dif -= (dif % 3600) / 60;
-                    int hours = ((int)dif / 3600);
-                    string t = "" + hours + "h " + minutes + "m " + seconds + "s.";
-                    mexicoCountdown.text = t;
-                }
-            }
 
-            if (GameController.newYorkInvaded == true)
-            {
-                newYorkCountdown.enabled = true;
-                if (invasionRestSecs * 10000000 + GameController.invTimeNewYork < (ulong)DateTime.Now.Ticks)
-                {
-                    float multiplier = UnityEngine.Random.Range(1.2f, 1.5f);
-                    int newZombies = Mathf.RoundToInt(GameController.zombSentInvNewYork * multiplier);
-                    GameController.qZombies += (GameController.zombSentInvNewYork + newZombies);
-                    invWin = Instantiate(invasionResultWin, new Vector2(0, 0), Quaternion.identity);
-                    if (GameController.qZombies > GameController.maxZombies)
+                    cityCountdown.enabled = true;
+
+                    if (collectRestSecs * 10000000 + GameController.invasionTime[i] < (ulong)DateTime.Now.Ticks)
                     {
-                        GameController.qZombies = GameController.maxZombies;
+                        float multiplier = UnityEngine.Random.Range(1.2f, 1.5f);
+                        int newZombies = Mathf.RoundToInt(GameController.zombsSentToInvade[i] * multiplier);
+                        GameController.qZombies += (GameController.zombsSentToInvade[i] + newZombies);
+                        invWin = Instantiate(invasionResultWin, new Vector2(0, 0), Quaternion.identity);
+                        if (GameController.qZombies > GameController.maxZombies)
+                        {
+                            GameController.qZombies = GameController.maxZombies;
+                        }
+                        invWin.GetComponent<InvasionReturned>().cityName = cityName;
+                        invWin.GetComponent<InvasionReturned>().transformedZombies = newZombies;
+                        invWin.GetComponent<InvasionReturned>().sentZombies = GameController.zombsSentToInvade[i];
+                        invWin.GetComponent<InvasionReturned>().totalZombies = GameController.qZombies;
+                        GameController.cityInvaded[i] = false;
+                        cityCountdown.enabled = false;
                     }
-                    invWin.GetComponent<InvasionReturned>().cityName = "New York";
-                    invWin.GetComponent<InvasionReturned>().transformedZombies = newZombies;
-                    invWin.GetComponent<InvasionReturned>().sentZombies = GameController.zombSentInvNewYork;
-                    invWin.GetComponent<InvasionReturned>().totalZombies = GameController.qZombies;
-                    GameController.newYorkInvaded = false;
-                    newYorkCountdown.enabled = false;
-                }
-                else
-                {
-                    ulong dif = (invasionRestSecs * 10000000 + GameController.invTimeNewYork - (ulong)DateTime.Now.Ticks) / 10000000;
-                    int seconds = ((int)dif % 60);
-                    dif -= dif % 60;
-                    int minutes = ((int)(dif % 3600) / 60);
-                    dif -= (dif % 3600) / 60;
-                    int hours = ((int)dif / 3600);
-                    string t = "" + hours + "h " + minutes + "m " + seconds + "s.";
-                    newYorkCountdown.text = t;
-                }
-            }
-
-            if (GameController.tokioInvaded == true)
-            {
-                tokioCountdown.enabled = true;
-                if (invasionRestSecs * 10000000 + GameController.invTimeTokio < (ulong)DateTime.Now.Ticks)
-                {
-                    float multiplier = UnityEngine.Random.Range(1.2f, 1.5f);
-                    int newZombies = Mathf.RoundToInt(GameController.zombSentInvTokio * multiplier);
-                    GameController.qZombies += (GameController.zombSentInvTokio + newZombies);
-                    invWin = Instantiate(invasionResultWin, new Vector2(0, 0), Quaternion.identity);
-                    if (GameController.qZombies > GameController.maxZombies)
+                    else
                     {
-                        GameController.qZombies = GameController.maxZombies;
+                        ulong dif = (collectRestSecs * 10000000 + GameController.invasionTime[i] - (ulong)DateTime.Now.Ticks) / 10000000;
+                        int seconds = ((int)dif % 60);
+                        dif -= dif % 60;
+                        int minutes = ((int)(dif % 3600) / 60);
+                        dif -= (dif % 3600) / 60;
+                        int hours = ((int)dif / 3600);
+                        string t = "" + hours + "h " + minutes + "m " + seconds + "s.";
+                        cityCountdown.text = t;
                     }
-                    invWin.GetComponent<InvasionReturned>().cityName = "Tokio";
-                    invWin.GetComponent<InvasionReturned>().transformedZombies = newZombies;
-                    invWin.GetComponent<InvasionReturned>().sentZombies = GameController.zombSentInvTokio;
-                    invWin.GetComponent<InvasionReturned>().totalZombies = GameController.qZombies;
-                    GameController.tokioInvaded = false;
-                    tokioCountdown.enabled = false;
-
-                }
-                else
-                {
-                    ulong dif = (invasionRestSecs * 10000000 + GameController.invTimeTokio - (ulong)DateTime.Now.Ticks) / 10000000;
-                    int seconds = ((int)dif % 60);
-                    dif -= dif % 60;
-                    int minutes = ((int)(dif % 3600) / 60);
-                    dif -= (dif % 3600) / 60;
-                    int hours = ((int)dif / 3600);
-                    string t = "" + hours + "h " + minutes + "m " + seconds + "s.";
-                    tokioCountdown.text = t;
                 }
             }
         }
@@ -152,69 +116,49 @@ public class MapController : MonoBehaviour
         }
         else
         {
-            if (GameController.mexicoCollecting == true)
+            for(int i = 0; i < GameController.numberOfCities; i++)
             {
-                mexicoCountdown.enabled = true;
-                if (collectRestSecs * 10000000 + GameController.collTimeMexico < (ulong)DateTime.Now.Ticks)
+                if (GameController.cityCollecting[i] == true)
                 {
-                    collWin = Instantiate(collectResultWin, new Vector2(0, 0), Quaternion.identity);
-                    collWin.GetComponent<CollectReturned>().cityName = "Mexico";
-                    mexicoCountdown.enabled = false;
-                }
-                else
-                {
-                    ulong dif = (collectRestSecs * 10000000 + GameController.collTimeMexico - (ulong)DateTime.Now.Ticks) / 10000000;
-                    int seconds = ((int)dif % 60);
-                    dif -= dif % 60;
-                    int minutes = ((int)(dif % 3600) / 60);
-                    dif -= (dif % 3600) / 60;
-                    int hours = ((int)dif / 3600);
-                    string t = "" + hours + "h " + minutes + "m " + seconds + "s.";
-                    mexicoCountdown.text = t;
-                }
-            }
+                    string cityName = "";
+                    TMP_Text cityCountdown = mexicoCountdown;
+                    thisCity = (CityType)i;
+                    switch(thisCity)
+                    {
+                        case CityType.Mexico:
+                            cityCountdown = mexicoCountdown;
+                            cityName = "Mexico";
+                            break;
+                        case CityType.NewYork:
+                            cityCountdown = newYorkCountdown;
+                            cityName = "New York";
+                            break;
+                        case CityType.Tokio:
+                            cityCountdown = tokioCountdown;
+                            cityName = "Tokio";
+                            break;
+                    }
 
-            if (GameController.newYorkCollecting == true)
-            {
-                newYorkCountdown.enabled = true;
-                if (collectRestSecs * 10000000 + GameController.collTimeNewYork < (ulong)DateTime.Now.Ticks)
-                {
-                    collWin = Instantiate(collectResultWin, new Vector2(0, 0), Quaternion.identity);
-                    collWin.GetComponent<CollectReturned>().cityName = "NewYork";
-                    newYorkCountdown.enabled = false;
-                }
-                else
-                {
-                    ulong dif = (collectRestSecs * 10000000 + GameController.collTimeNewYork - (ulong)DateTime.Now.Ticks) / 10000000;
-                    int seconds = ((int)dif % 60);
-                    dif -= dif % 60;
-                    int minutes = ((int)(dif % 3600) / 60);
-                    dif -= (dif % 3600) / 60;
-                    int hours = ((int)dif / 3600);
-                    string t = "" + hours + "h " + minutes + "m " + seconds + "s.";
-                    newYorkCountdown.text = t;
-                }
-            }
+                    cityCountdown.enabled = true;
 
-            if (GameController.tokioCollecting == true)
-            {
-                tokioCountdown.enabled = true;
-                if (collectRestSecs * 10000000 + GameController.collTimeTokio < (ulong)DateTime.Now.Ticks)
-                {
-                    collWin = Instantiate(collectResultWin, new Vector2(0, 0), Quaternion.identity);
-                    collWin.GetComponent<CollectReturned>().cityName = "Tokio";
-                    tokioCountdown.enabled = false;
-                }
-                else
-                {
-                    ulong dif = (collectRestSecs * 10000000 + GameController.collTimeTokio - (ulong)DateTime.Now.Ticks) / 10000000;
-                    int seconds = ((int)dif % 60);
-                    dif -= dif % 60;
-                    int minutes = ((int)(dif % 3600) / 60);
-                    dif -= (dif % 3600) / 60;
-                    int hours = ((int)dif / 3600);
-                    string t = "" + hours + "h " + minutes + "m " + seconds + "s.";
-                    tokioCountdown.text = t;
+                    if (collectRestSecs * 10000000 + GameController.collectTime[i] < (ulong)DateTime.Now.Ticks)
+                    {
+                        collWin = Instantiate(collectResultWin, new Vector2(0, 0), Quaternion.identity);
+                        collWin.GetComponent<CollectReturned>().cityIndex = i;
+                        collWin.GetComponent<CollectReturned>().cityName = cityName;
+                        cityCountdown.enabled = false;
+                    }
+                    else
+                    {
+                        ulong dif = (collectRestSecs * 10000000 + GameController.collectTime[i] - (ulong)DateTime.Now.Ticks) / 10000000;
+                        int seconds = ((int)dif % 60);
+                        dif -= dif % 60;
+                        int minutes = ((int)(dif % 3600) / 60);
+                        dif -= (dif % 3600) / 60;
+                        int hours = ((int)dif / 3600);
+                        string t = "" + hours + "h " + minutes + "m " + seconds + "s.";
+                        cityCountdown.text = t;
+                    }
                 }
             }
         }

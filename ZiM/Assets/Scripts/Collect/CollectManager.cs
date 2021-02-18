@@ -8,6 +8,7 @@ public class CollectManager : MonoBehaviour
     public GameObject UIPrefab;
     public GameObject presentWindow;
     public GameObject zombie;
+    public GameObject raccoon;
     public GameObject trash;
     public GameObject item;
     public GameObject currency;
@@ -17,7 +18,7 @@ public class CollectManager : MonoBehaviour
     bool zombieMovingI;
     bool zombieMovingO;
     bool zombieExiting;
-    string cityCollected;
+    int cityCollected;
     string presentText;
     string itemFoundName;
     int zombsReturned;
@@ -32,30 +33,21 @@ public class CollectManager : MonoBehaviour
     GameObject presentWin;
 
     [SerializeField]
-    GameObject[] mexicoItems;
+    GameObject[] collectibles;
     [SerializeField]
-    GameObject[] newYorkItems;
+    GameObject[] head;
     [SerializeField]
-    GameObject[] tokioItems;
+    GameObject[] body;
+    [SerializeField]
+    GameObject[] legs;
 
-    
+
 
     void Start()
     {
         GameObject UIShow = Instantiate(UIPrefab, new Vector2(0, 0), Quaternion.identity);
         cityCollected = GameController.collectedCity;
-        if (cityCollected == "Mexico")
-        {
-            zombsReturned = GameController.zombSentCollMexico;
-        }
-        else if (cityCollected == "NewYork")
-        {
-            zombsReturned = GameController.zombSentCollNewYork;
-        }
-        else if (cityCollected == "Tokio")
-        {
-            zombsReturned = GameController.zombSentCollTokio;
-        }
+        zombsReturned = GameController.zombsSentToCollect[cityCollected];
         zombieEntering = true;
         height = 2 * Camera.main.orthographicSize;
         width = height * Camera.main.aspect;
@@ -107,38 +99,24 @@ public class CollectManager : MonoBehaviour
             zombieMovingO = false;
             Destroy(newZombie.gameObject);
             zombsReturned -= 1;
-            if (cityCollected == "Mexico")
-            {
-                GameController.zombSentCollMexico -= 1;
-            }
-            else if (cityCollected == "NewYork")
-            {
-                GameController.zombSentCollNewYork -= 1;
-            }
-            else if (cityCollected == "Tokio")
-            {
-                GameController.zombSentCollTokio -= 1;
-            }
+            GameController.zombsSentToCollect[cityCollected] -= 1;
             if (zombsReturned > 0)
             {
                 zombieEntering = true;
             }
             else
             {
-                if (cityCollected == "Mexico")
+                if(zombsReturned == 0 && GameController.zombieRaccoon == true)
                 {
-                    GameController.mexicoCollecting = false;
+                    zombieEntering = true;
                 }
-                else if (cityCollected == "NewYork")
+                else
                 {
-                    GameController.newYorkCollecting = false;
+                    GameController.cityCollecting[cityCollected] = false;
+                    GameController.fashionMagazineCity[cityCollected] = false;
+                    GameController.geekGlassesCity[cityCollected] = false;
+                    SceneManager.LoadScene("MainSc");
                 }
-                else if (cityCollected == "Tokio")
-                {
-                    GameController.tokioCollecting = false;
-                }
-
-                SceneManager.LoadScene("MainSc");
             }
         }
     }
@@ -146,70 +124,63 @@ public class CollectManager : MonoBehaviour
     void ZombiePresents()
     {
         currencyWon = 0;
-        int foundProb = Random.Range(1, 11);
+        int foundProb = Random.Range(0, 11);
+        if(GameController.fashionMagazineCity[cityCollected] == true)
+        {
+            if(foundProb == 0 || foundProb == 1)
+            {
+                foundProb = 9;
+            }
+        }
+
+        if(GameController.geekGlassesCity[cityCollected] == true)
+        {
+            if(foundProb == 3)
+            {
+                foundProb = 4;
+            }
+        }
+
         if(foundProb < 4)
         {
             present = trash;
-            presentText = "Looks like... well, garbage.";
+            if(GameController.recycleBin == true)
+            {
+                presentText = "Garbage. Directly into the Recyvle Bin. I think we can get 2 coins for this";
+                GameController.currency += currencyWon;
+            }
+            else
+            {
+                presentText = "Looks like... well, garbage.";
+            }
 
         }
-        else if(foundProb < 7)
+        else if(foundProb < 8)
         {
-            if (cityCollected == "Mexico")
+            int itemFound;
+            itemFound = Random.Range(0, (GameController.collectiblesPerCity));
+            if(GameController.collectibles[cityCollected, itemFound] == true)
             {
-                int itemFound;
-                itemFound = Random.Range(0, (GameController.itemsPerCity));
-                itemFoundName = mexicoItems[itemFound].name;
-                if (GameController.mexicoItems[itemFound] == true)
+                if (GameController.recycleBin == true)
                 {
                     currencyWon = Random.Range(5, 11);
                     presentText = "Wow!! it's a " + itemFoundName + "!\nAnother one... I think we can sell it for $" + currencyWon + ".";
                 }
                 else
                 {
-                    GameController.mexicoItems[itemFound] = true;
-                    presentText = "Is that a " + itemFoundName + "? Amazing!\nLets add it to the collection right away!";
+                    presentText = "Another " + itemFoundName + ".\nWe don't want a repeated item... To the trash!.";
                 }
-                item = mexicoItems[itemFound];
             }
-            else if (cityCollected == "NewYork")
+            else
             {
-                int itemFound;
-                itemFound = Random.Range(0, (GameController.itemsPerCity));
-                itemFoundName = newYorkItems[itemFound].name;
-                if (GameController.newYorkItems[itemFound] == true)
-                {
-                    currencyWon = Random.Range(5, 11);
-                    presentText = "Wow!! it's a " + itemFoundName + "!\nAnother one... I think we can sell it for $" + currencyWon + ".";
-                }
-                else
-                {
-                    GameController.newYorkItems[itemFound] = true;
-                    presentText = "Is that a " + itemFoundName + "? Amazing!\nLets add it to the collection right away!";
-                }
-                item = newYorkItems[itemFound];
-
+                GameController.collectibles[cityCollected, itemFound] = true;
+                presentText = "Is that a " + itemFoundName + "? Amazing!\nLets add it to the collection right away!";
             }
-            else if (cityCollected == "Tokio")
-            {
-                int itemFound;
-                itemFound = Random.Range(0, (GameController.itemsPerCity));
-                itemFoundName = tokioItems[itemFound].name;
-                if (GameController.tokioItems[itemFound] == true)
-                {
-                    currencyWon = Random.Range(5, 11);
-                    presentText = "Wow!! it's a " + itemFoundName + "!\nAnother one... I think we can sell it for $" + currencyWon + ".";
-                }
-                else
-                {
-                    GameController.tokioItems[itemFound] = true;
-                    presentText = "Is that a " + itemFoundName + "? Amazing!\nLets add it to the collection right away!";
-                }
-                item = tokioItems[itemFound];
-            }
+            int index = ((cityCollected) * GameController.collectiblesPerCity) + itemFound;
+            item = collectibles[index];
             present = item;
         }
-        else if(foundProb < 9)
+        else if(foundProb < 8)
         {
             present = currency;
             int currencyFound;
@@ -233,8 +204,42 @@ public class CollectManager : MonoBehaviour
         }
         else
         {
+            int clothFound = Random.Range(0, GameController.clothesPerOrigin);
+            int clothType = Random.Range(0, 3);
+            if(GameController.clothFound[(cityCollected + 1), clothType, clothFound] == true)
+            {
+                if (GameController.recycleBin == true)
+                {
+                    currencyWon = Random.Range(4, 10);
+                    presentText = "We already have one like that. Maybe sell it for $" + currencyWon + ".";
+                }
+                else
+                {
+                    presentText = "And yet another repeated thing going to the trash.... =/";
+                }
+
+            }
+            else
+            {
+                GameController.clothFound[(cityCollected + 1), clothType, clothFound] = true;
+                presentText = "Nice! I have the perfect outfit for that!";
+
+            }
+            int index = ((cityCollected) * GameController.clothesPerOrigin) + clothFound;
+            if (clothType == 0)
+            {
+                clothes = head[index];
+            }
+            else if(clothType == 1)
+            {
+                clothes = body[index];
+            }
+            else if (clothType == 2)
+            {
+                clothes = legs[index];
+            }
             present = clothes;
-            presentText = "Some fashion clothes! We don´t have a wardrobe but we will have it soon! ^";
+
         }
         GameController.currency += currencyWon;
     }
@@ -248,7 +253,14 @@ public class CollectManager : MonoBehaviour
         float setPositionX = -(width / 2) -2f;
         float setPositionY = 0f;
         Vector2 zombieOrigin = new Vector2(setPositionX, setPositionY);
-        newZombie = Instantiate(zombie, zombieOrigin, Quaternion.identity);
+        if(zombsReturned == 0)
+        {
+            newZombie = Instantiate(raccoon, zombieOrigin, Quaternion.identity);
+        }
+        else
+        {
+            newZombie = Instantiate(zombie, zombieOrigin, Quaternion.identity);
+        }
         Vector2 presentOrigin = new Vector3(setPositionX + 1f, setPositionY, -1f);
         newPresent = Instantiate(present, presentOrigin, Quaternion.identity);
         newPresent.transform.parent = newZombie.transform;

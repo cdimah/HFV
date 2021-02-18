@@ -18,18 +18,36 @@ public class TV : MonoBehaviour
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);    //Register click on player
         if (Input.GetMouseButtonDown(0))
         {
-            if (coll == Physics2D.OverlapPoint(mousePos))
+            GameObject window = GameObject.FindWithTag("Window");
+            if (window)
             {
-                if(GameController.qZombies < 49)
-                {
-                    GameController.qZombies += 2;
-                    GameObject mainController = GameObject.Find("MainController");
-                    var mainControllerSC = mainController.GetComponent<MainController>();
-                    mainControllerSC.CreateZombie();
-                }
-                AddWindow = Instantiate(TVAddWindow, new Vector2(0, 0), Quaternion.identity);
-            }
 
+            }
+            else
+            {
+                if (coll == Physics2D.OverlapPoint(mousePos))
+                {
+                    if (GameController.qZombies < 49)
+                    {
+                        GameController.qZombies += 2;
+                        GameObject mainController = GameObject.Find("MainController");
+                        var mainControllerSC = mainController.GetComponent<MainController>();
+                        mainControllerSC.CreateZombie();
+                        mainControllerSC.CreateZombie();
+                    }
+                    else if (GameController.qZombies == 49)
+                    {
+                        GameController.qZombies += 1;
+                        GameObject mainController = GameObject.Find("MainController");
+                        var mainControllerSC = mainController.GetComponent<MainController>();
+                        mainControllerSC.CreateZombie();
+                    }
+
+                    
+
+                    AddWindow = Instantiate(TVAddWindow, new Vector2(0, 0), Quaternion.identity);
+                }
+            }
         }
     }
 }

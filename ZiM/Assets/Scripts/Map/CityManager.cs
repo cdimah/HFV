@@ -5,18 +5,19 @@ using UnityEngine;
 
 public class CityManager : MonoBehaviour
 {
-    int numBystanders;
-    int minZombies;
-    int maxZombies;
-    float citySize;
+    public int cityIndex;
+    public int numBystanders;
+    public int minZombies;
+    public int maxZombies;
+    public float citySize;
     Collider2D coll;           //Colider for interactions.
     public GameObject sceneConfigurator;
 
     public enum Cities
     {
-        Tokio,
+        Mexico,
         NewYork,
-        Mexico
+        Tokio
     }
 
     Cities selectedCity;
@@ -29,31 +30,26 @@ public class CityManager : MonoBehaviour
 
     void Update()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);    //Register click on player
         if (Input.GetMouseButtonDown(0))
         {
-            if (coll == Physics2D.OverlapPoint(mousePos))
+            GameObject window = GameObject.FindWithTag("Window");
+            if(window)
             {
-                string city = coll.gameObject.name;
-                if (city == "Mexico")
+
+            }
+            else
+            {
+                if(GameController.cityInvaded[cityIndex] == true || GameController.cityCollecting[cityIndex] == true)
                 {
-                    selectedCity = Cities.Mexico;
-                    if(GameController.mexicoInvaded == false)
-                    {
-                        configCity();
-                    }
-                } else if (city == "NewYork")
+                    
+                }
+                else
                 {
-                    selectedCity = Cities.NewYork;
-                    if (GameController.newYorkInvaded == false)
+                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);    //Register click on player
+                    if (coll == Physics2D.OverlapPoint(mousePos))
                     {
-                        configCity();
-                    }
-                } else if (city == "Tokio")
-                {
-                    selectedCity = Cities.Tokio;
-                    if (GameController.tokioInvaded == false)
-                    {
+                        selectedCity = (Cities)cityIndex;
+                        GameController.cityInvaded[cityIndex] = false;
                         configCity();
                     }
                 }
@@ -63,29 +59,8 @@ public class CityManager : MonoBehaviour
 
     void configCity()
     {
-        switch (selectedCity)
-        {
-            case Cities.Tokio:
-                numBystanders = 20;
-                minZombies = 10;
-                maxZombies = 15;
-                citySize = 50f;
-                break;
-            case Cities.NewYork:
-                numBystanders = 14;
-                minZombies = 5;
-                maxZombies = 10;
-                citySize = 40f;
-                break;
-            case Cities.Mexico:
-                numBystanders = 16;
-                minZombies = 8;
-                maxZombies = 12;
-                citySize = 45f;
-                break;
-        }
-
         GameObject sceneConf = Instantiate(sceneConfigurator, new Vector2(0, 0), Quaternion.identity);
+        sceneConf.GetComponent<ConfirmationWi>().cityIndex = cityIndex;
         sceneConf.GetComponent<ConfirmationWi>().cityName = this.gameObject.name;
         sceneConf.GetComponent<ConfirmationWi>().numBystanders = numBystanders;
         sceneConf.GetComponent<ConfirmationWi>().minZombies = minZombies;

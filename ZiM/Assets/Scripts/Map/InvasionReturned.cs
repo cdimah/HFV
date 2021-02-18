@@ -9,11 +9,12 @@ public class InvasionReturned : MonoBehaviour
     public int transformedZombies;
     public int sentZombies;
     public int totalZombies;
-    public Button AcceptButton;
-    public Text ReturnedText;
-    public Text TransformedText;
-    public Text SentText;
-    public Text TotalText;
+    public Button acceptButton;
+    public Text returnedText;
+    public Text transformedText;
+    public Text catText;
+    public Text sentText;
+    public Text totalText;
 
     void Awake()
     {
@@ -27,17 +28,29 @@ public class InvasionReturned : MonoBehaviour
 
     void Start()
     {
-        AcceptButton.onClick.AddListener(CloseWindow);
-        ReturnedText.text = "Your Zombies have returned from " + cityName + "!";
-        SentText.text = "You sent " + sentZombies + " Zombies.";
-        TransformedText.text = transformedZombies + " Zombies returned.";
-        if(GameController.qZombies == GameController.maxZombies)
+        acceptButton.onClick.AddListener(CloseWindow);
+        returnedText.text = "Your Zombies have returned from " + cityName + "!";
+        sentText.text = "You sent " + sentZombies + " Zombies.";
+        transformedText.text = transformedZombies + " Zombies returned.";
+        if(GameController.zombieCat == true)
         {
-            TotalText.text = "You reached the maximum number of Zombies: " + totalZombies;
+            int catTransformed = Random.Range(1, 3);
+            catText.text = "And look, your cat brougt " + catTransformed + " more!";
+            totalZombies += catTransformed;
+            GameController.qZombies += catTransformed;
         }
         else
         {
-            TotalText.text = "You have a total of " + totalZombies + " Zombies.";
+            catText.text = "";
+        }
+        if (GameController.qZombies >= GameController.maxZombies)
+        {
+            totalText.text = "You reached the maximum number of Zombies: " + GameController.maxZombies;
+            GameController.qZombies = GameController.maxZombies;
+        }
+        else
+        {
+            totalText.text = "You have a total of " + totalZombies + " Zombies.";
         }
     }
 

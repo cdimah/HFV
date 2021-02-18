@@ -2,54 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemdisplayManager : MonoBehaviour
+public class ItemDisplayManager : MonoBehaviour
 {
+    int numberOfCities = GameController.numberOfCities;
+    int collectiblesPerCity = GameController.collectiblesPerCity;
     float iconSize;
     Vector2 itemPosition;
 
     [SerializeField]
-    GameObject[] mexicoItems;
-    [SerializeField]
-    GameObject[] newYorkItems;
-    [SerializeField]
-    GameObject[] tokioItems;
+    GameObject[] collectibles;
 
     void Start()
     {
-        int itemsPerCity = GameController.itemsPerCity;
         float height = 2 * Camera.main.orthographicSize;
         float width = height * Camera.main.aspect;
         iconSize = height / 9;
         itemPosition = new Vector2((-width / 2) + (iconSize * 2), Camera.main.transform.position.y + (iconSize * 2.5f));
-        for (int i = 0; i < itemsPerCity; i++)
+
+        for (int i = 0; i < numberOfCities; i++)
         {
-            CreateMexicoItem(mexicoItems[i], i);
-            CreateNewYorkItem(mexicoItems[i], i);
-            CreateTokioItem(mexicoItems[i], i);
+            for (int j = 0; j < collectiblesPerCity; j++)
+            {
+                int index = (i * collectiblesPerCity) + j;
+                CreateCollectibles(collectibles[index], i, j);
+            }
         }
     }
 
-    void CreateMexicoItem(GameObject item, int index)
+    void CreateCollectibles(GameObject collectible, int cityIndex, int collectibleIndex)
     {
-        if (GameController.mexicoItems[index] == false)
+        if (GameController.collectibles[cityIndex, collectibleIndex] == false)
         {
-            mexicoItems[index].SetActive(false);
-        }
-    }
-
-    void CreateNewYorkItem(GameObject item, int index)
-    {
-        if (GameController.newYorkItems[index] == false)
-        {
-            newYorkItems[index].SetActive(false);
-        }
-    }
-
-    void CreateTokioItem(GameObject item, int index)
-    {
-        if (GameController.tokioItems[index] == false)
-        {
-            tokioItems[index].SetActive(false);
+            collectible.SetActive(false);
         }
     }
 }
